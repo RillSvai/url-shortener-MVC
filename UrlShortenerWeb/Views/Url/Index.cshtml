@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Url>
+@inject IUserManager<User> _userManager
+
+
+<div class="card border-0">
+	<div class="card-header p-4 rounded-5 bg-info opacity-50">
+		<h1 class="text-center">Urls</h1>
+	</div>
+	<div class="card-body">
+		<table class="table table-bordered table-dark table-striped border-white border-white">
+			<thead>
+				<tr>
+					<th>
+						Original version of URL
+					</th>
+					<th>
+						Short version of URL
+					</th>
+					<th>
+					<div class="d-flex justify-content-end">
+							@if (_userManager.IsSignedIn(SD.User))
+							{
+								<a class="btn btn-dark" asp-controller="Url" asp-action="Create"><i class="bi bi-plus-circle"></i> Create</a>
+							}
+					</div>	 
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (Url url in Model)
+				{
+					<tr>
+						<td>
+							@url.OriginalUrl
+						</td>
+						<td>
+							@url.ShortUrl
+						</td>
+						<td>
+							<div class="btn-group w-100" role="group">
+								@if (_userManager.IsSignedIn(SD.User))
+								{
+									<a class="nav-link btn btn-secondary" asp-controller="Url" asp-action="Details" asp-route-id=@url.Id>Details</a>
+								}
+								@if (_userManager.IsInRole(SD.User,SD.Role_Admin) || (_userManager.IsSignedIn(SD.User) && SD.User.Id == url.CreatorId))
+								{
+									<a class="nav-link btn btn-danger" asp-controller="Url" asp-action="Delete" asp-route-id=@url.Id>Delete</a>
+								}
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

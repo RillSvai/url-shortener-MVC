@@ -1,0 +1,20 @@
+﻿@model Url
+
+	<div class ="row mt-5">
+		<h5 class="text-center">Created by:</h5>
+		<h2 class="text-center text-warning">@Model.User.UserName</h2>
+	</div>
+	<div class="row">
+		<h5 class="text-center">Original link:</h5>
+	<h2 class="text-center text-warning"><a class="nav-link" href="@Model.OriginalUrl">@Model.OriginalUrl</a></h2>
+	</div>
+	<div class="row">
+		<h5 class="text-center">Short link:</h5>
+		<h2 class="text-center text-warning"><a class="nav-link" href="@Model.ShortUrl">@Model.ShortUrl</a></h2>
+	</div>
+	<div class="row">
+		<div class="col-12 d-flex justify-content-center">
+			<a class="btn btn-primary btn-lg " asp-controller="Url" asp-action="Index">Back to table</a>
+		</div>
+	</div>
+</div>
