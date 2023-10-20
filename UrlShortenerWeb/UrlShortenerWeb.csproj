@@ -16,13 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UrlShortener.DataAccess\UrlShortener.DataAccess.csproj" />
-    <ProjectReference Include="..\UrlShortener.Models\UrlShortener.Models.csproj" />
-    <ProjectReference Include="..\UrlShortener.Utility\UrlShortener.Utility.csproj" />
+    <Folder Include="Views\About\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\About\" />
+    <ProjectReference Include="..\UrlShortener.DataAccess\UrlShortener.DataAccess.csproj" />
+    <ProjectReference Include="..\UrlShortener.Models\UrlShortener.Models.csproj" />
+    <ProjectReference Include="..\UrlShortener.Utility\UrlShortener.Utility.csproj" />
   </ItemGroup>
 
 </Project>

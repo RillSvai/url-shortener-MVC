@@ -10,6 +10,6 @@ namespace UrlShortener.Utility.Identity
     {
         public bool IsInRole(T user, string role);
         public bool IsSignedIn(T user);
-        public void AppointAdmin (T user);
+        public void AppointRole (T user);
     }
 }

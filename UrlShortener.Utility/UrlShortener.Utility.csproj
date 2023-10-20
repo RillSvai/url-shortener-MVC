@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -7,8 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UrlShortener.Models\UrlShortener.Models.csproj" />
-
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
   </ItemGroup>
+	<ItemGroup>
+		<Reference Include="UrlShortener.Models">
+			<HintPath>..\UrlShortener.Models\bin\Debug\net7.0\UrlShortener.Models.dll</HintPath>
+		</Reference>
+		<Reference Include="UrlShortener.DataAccess">
+			<HintPath>..\UrlShortener.DataAccess\bin\Debug\net7.0\UrlShortener.DataAccess.dll</HintPath>
+		</Reference>
 
+	</ItemGroup>
 </Project>

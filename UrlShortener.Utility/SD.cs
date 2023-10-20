@@ -13,6 +13,6 @@ namespace UrlShortener.Utility
         public const string Role_Customer = "Customer";
         public static string AboutText { get; set; } 
             = "Some about text which user with role of 'admin' can edit";
-        public static User User { get; set; }
+        public static User? User { get; set; }
     }
 }

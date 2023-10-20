@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UrlShortener.DataAccess.Repository.IRepository;
 using UrlShortener.Models;
 using UrlShortener.Utility;
+using UrlShortener.Utility.Identity;
 
 namespace UrlShortenerWeb.Controllers
 {
     public class IdentityController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public IdentityController(IUnitOfWork unitOfWork)
+        private readonly IUserManager<User> _userManager;
+        public IdentityController(IUnitOfWork unitOfWork, IUserManager<User> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager; 
         }
         public IActionResult Index()
         {
@@ -32,13 +36,13 @@ namespace UrlShortenerWeb.Controllers
                 return View(registerModel);
             }
             _unitOfWork.UserRepo.Insert(registerModel.User);
-            SD.User = registerModel.User;
             _unitOfWork.Save();
             return RedirectToAction("Index","Home");
         }
         public IActionResult Logout() 
         {
-            return View();
+            SD.User = null;
+            return RedirectToAction("Index", "Home");
         }
     }
 }
