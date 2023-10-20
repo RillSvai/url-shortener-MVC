@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UrlShortener.Models;
 
 namespace UrlShortenerWeb.Controllers
 {
@@ -17,9 +18,19 @@ namespace UrlShortenerWeb.Controllers
         {
             return View();
         }
-        public IActionResult Registration() 
+        public IActionResult Register() 
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult Register(RegisterViewModel registerModel)
+        {
+            
+            if (!ModelState.IsValid) 
+            {
+                return View(registerModel);
+            }
+            return RedirectToAction("Index","Home");
         }
         public IActionResult Logout() 
         {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace UrlShortener.Models
 {
@@ -12,7 +13,9 @@ namespace UrlShortener.Models
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
+        [ValidateNever]
         public string Role { get; set; }
+        [ValidateNever]
         public List<Url> CreatedUrls { get; set; }
 
     }
