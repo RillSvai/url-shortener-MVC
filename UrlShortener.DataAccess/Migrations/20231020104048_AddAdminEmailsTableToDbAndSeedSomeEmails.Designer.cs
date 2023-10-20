@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UrlShortener.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using UrlShortener.DataAccess.Data;
 namespace UrlShortener.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231020104048_AddAdminEmailsTableToDbAndSeedSomeEmails")]
+    partial class AddAdminEmailsTableToDbAndSeedSomeEmails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,6 +79,24 @@ namespace UrlShortener.DataAccess.Migrations
                     b.HasIndex("CreatorId");
 
                     b.ToTable("Urls");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatorId = 1,
+                            OriginalUrl = "Test1Long",
+                            ShortUrl = "Test1Short",
+                            TokenShortUrl = "test1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatorId = 2,
+                            OriginalUrl = "Test2Long",
+                            ShortUrl = "Test2Short",
+                            TokenShortUrl = "test2"
+                        });
                 });
 
             modelBuilder.Entity("UrlShortener.Models.User", b =>
@@ -105,6 +126,24 @@ namespace UrlShortener.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "Test1Email",
+                            Password = "Test1Password",
+                            Role = "Customer",
+                            UserName = "Test1Name"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "Test2Email",
+                            Password = "Test2Password",
+                            Role = "Admin",
+                            UserName = "Test2Name"
+                        });
                 });
 
             modelBuilder.Entity("UrlShortener.Models.Url", b =>

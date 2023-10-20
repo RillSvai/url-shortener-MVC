@@ -10,15 +10,14 @@ namespace UrlShortener.Utility.CustomValidation
 {
     public class ComparePasswordAttribute : ValidationAttribute
     {
-        private readonly string _password;
-        public ComparePasswordAttribute(string password) 
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            _password = password;
-        }
-        public override bool IsValid(object? value)
-        {
-            string? matchingPassword = (value as User)?.Password;
-            return _password == matchingPassword;
+            RegisterViewModel? instance = validationContext.ObjectInstance as RegisterViewModel;
+            if (instance?.User.Password != value as string) 
+            {
+                return new ValidationResult("Confirm password don`t match!");
+            }
+            return ValidationResult.Success;
         }
     }
 }

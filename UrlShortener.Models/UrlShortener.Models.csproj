@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\test\test.csproj" />
+    <Reference Include="UrlShortener.Utility">
+      <HintPath>..\UrlShortener.Utility\bin\Debug\net7.0\UrlShortener.Utility.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

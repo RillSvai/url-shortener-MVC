@@ -1,10 +1,16 @@
-﻿
+﻿using UrlShortener.DataAccess.Data;
 using UrlShortener.Models;
 
 namespace UrlShortener.Utility.Identity
 {
     public class UserManager : IUserManager<User>
     {
+        private readonly ApplicationDbContext _db;
+        
+        public void AppointAdmin(User user)
+        {
+            
+        }
 
         public bool IsInRole(User user, string role)
         {
