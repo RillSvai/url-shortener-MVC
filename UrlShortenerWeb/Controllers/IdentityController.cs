@@ -24,6 +24,22 @@ namespace UrlShortenerWeb.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Login(LoginViewModel userData)
+        {
+            User? user = _unitOfWork.UserRepo.Get(user => user.Email == userData.Email && user.Password == userData.Password, null);
+            if (user is null)
+            {
+                ModelState.AddModelError("", "Data incorrect!");
+            }
+            if (!ModelState.IsValid) 
+            {
+                return View();
+            }
+            SD.User = user; 
+            return RedirectToAction("Index", "Home");
+ 
+        }
         public IActionResult Register() 
         {
             return View();
