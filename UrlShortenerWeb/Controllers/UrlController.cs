@@ -16,7 +16,7 @@ namespace UrlShortenerWeb.Controllers
         }
         public IActionResult Index()
         {
-            SD.User = _unitOfWork.UserRepo.Get(user => user.Id == 5, null);
+            SD.User = _unitOfWork.UserRepo.Get(user => user.Id == 3, null);
             return View(_unitOfWork.UrlRepo.GetAll(null, null));
         }
         public IActionResult Details(int? id)
@@ -45,10 +45,20 @@ namespace UrlShortenerWeb.Controllers
             _unitOfWork.Save();
             return RedirectToAction("Index", "Url");
         }
-        [HttpDelete]
-        public IActionResult Delete(int id) 
+        public IActionResult Delete(int? id)
         {
-            return View();
+            if (id is null || id == 0) 
+            {
+                return BadRequest();
+            }
+            Url url = _unitOfWork.UrlRepo.Get(x => x.Id == id, null);
+            if (url is null) 
+            {
+                return BadRequest();
+            }
+            _unitOfWork.UrlRepo.Remove(url);
+            _unitOfWork.Save();
+            return RedirectToAction("Index","Url");
         }
     }
 }
