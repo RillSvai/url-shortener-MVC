@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using UrlShortener.DataAccess.Repository.IRepository;
 using UrlShortener.Models;
 using UrlShortener.Utility;
+using UrlShortener.Utility.Identity;
 
 namespace UrlShortenerWeb.Controllers
 {
@@ -9,18 +11,20 @@ namespace UrlShortenerWeb.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUrlShortener _urlShortener;
-        public UrlController(IUnitOfWork unitOfWork, IUrlShortener urlShortener)
+        private readonly IUserManager<User> _userManager;
+        public UrlController(IUnitOfWork unitOfWork, IUrlShortener urlShortener, IUserManager<User> userManager)
         {
             _unitOfWork = unitOfWork;
             _urlShortener = urlShortener;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
-            return View(_unitOfWork.UrlRepo.GetAll(null, null));
+			return View(_unitOfWork.UrlRepo.GetAll(null, null));
         }
         public IActionResult Details(int? id)
         {
-            if (id == null)
+			if (id == null || !_userManager.IsSignedIn(SD.User))
             {
                 return NotFound();
             }
@@ -28,6 +32,10 @@ namespace UrlShortenerWeb.Controllers
         }
         public IActionResult Create()
         {
+            if (!_userManager.IsSignedIn(SD.User)) 
+            {
+                return NotFound();
+            }
             return View();
         }
         [HttpPost]
@@ -62,7 +70,11 @@ namespace UrlShortenerWeb.Controllers
         }
         public IActionResult Delete(int? id)
         {
-            if (id is null || id == 0) 
+			if (!_userManager.IsSignedIn(SD.User) || (_userManager.IsInRole(SD.User,SD.Role_Customer) && SD.User.Id != _unitOfWork.UrlRepo.Get(url => url.Id == id,null).CreatorId))
+            { 
+                return NotFound();
+            }
+            if (id is null || id == 0 ) 
             {
                 return BadRequest();
             }
