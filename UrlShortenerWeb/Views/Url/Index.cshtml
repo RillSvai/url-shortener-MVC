@@ -27,7 +27,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (Url url in Model.OrderByDescending(url => url.CreatorId == SD.User.Id))
+				@foreach (Url url in SD.User is not null ? Model.OrderByDescending(url => url.CreatorId == SD.User.Id) : Model)
 				{
 					<tr>
 						<td>

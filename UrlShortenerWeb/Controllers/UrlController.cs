@@ -16,7 +16,6 @@ namespace UrlShortenerWeb.Controllers
         }
         public IActionResult Index()
         {
-            SD.User = _unitOfWork.UserRepo.Get(user => user.Id == 5, null);
             return View(_unitOfWork.UrlRepo.GetAll(null, null));
         }
         public IActionResult Details(int? id)
@@ -56,7 +55,7 @@ namespace UrlShortenerWeb.Controllers
             }
 		    urlVM.Url.TokenShortUrl = token;
 			urlVM.Url.ShortUrl = _urlShortener.GetShortUrl(HttpContext.Request.Scheme,HttpContext.Request.Host.Value,urlVM.Url.TokenShortUrl);
-            urlVM.Url.CreatorId = SD.User.Id;
+            urlVM.Url.CreatorId = SD.User?.Id ?? _unitOfWork.UserRepo.Get(null,null).Id;
             _unitOfWork.UrlRepo.Insert(urlVM.Url);
             _unitOfWork.Save();
             return RedirectToAction("Index", "Url");
