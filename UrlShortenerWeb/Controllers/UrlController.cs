@@ -16,7 +16,7 @@ namespace UrlShortenerWeb.Controllers
         }
         public IActionResult Index()
         {
-            SD.User = _unitOfWork.UserRepo.Get(user => user.Id == 3, null);
+            SD.User = _unitOfWork.UserRepo.Get(user => user.Id == 5, null);
             return View(_unitOfWork.UrlRepo.GetAll(null, null));
         }
         public IActionResult Details(int? id)
@@ -34,12 +34,28 @@ namespace UrlShortenerWeb.Controllers
         [HttpPost]
         public IActionResult Create(UrlViewModel urlVM) 
         {
+            if (_unitOfWork.UrlRepo.Get(url => url.OriginalUrl == urlVM.Url.OriginalUrl,null) is not null) 
+            {
+                ModelState.AddModelError("Url", "This url already exists(");
+            }
             if (!ModelState.IsValid) 
             {
                 return View();  
             }
-            urlVM.Url.TokenShortUrl = _urlShortener.GetToken(urlVM.TokenLen);
-            urlVM.Url.ShortUrl = _urlShortener.GetShortUrl(HttpContext.Request.Scheme,HttpContext.Request.Host.Value,urlVM.Url.TokenShortUrl);
+            string token = _urlShortener.GetToken(urlVM.TokenLen);
+			uint i = 0;
+            while (_unitOfWork.UrlRepo.Get(url => url.TokenShortUrl == token, null) is not null) 
+            {
+				if (++i == 10)
+				{
+					_unitOfWork.UrlRepo.Remove(_unitOfWork.UrlRepo.Get(url => url.TokenShortUrl == token, null));
+					_unitOfWork.Save();
+                    break;
+				}
+				token = _urlShortener.GetToken(8);
+            }
+		    urlVM.Url.TokenShortUrl = token;
+			urlVM.Url.ShortUrl = _urlShortener.GetShortUrl(HttpContext.Request.Scheme,HttpContext.Request.Host.Value,urlVM.Url.TokenShortUrl);
             urlVM.Url.CreatorId = SD.User.Id;
             _unitOfWork.UrlRepo.Insert(urlVM.Url);
             _unitOfWork.Save();

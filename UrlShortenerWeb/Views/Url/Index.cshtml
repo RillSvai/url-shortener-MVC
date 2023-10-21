@@ -27,14 +27,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (Url url in Model)
+				@foreach (Url url in Model.OrderByDescending(url => url.CreatorId == SD.User.Id))
 				{
 					<tr>
 						<td>
-							@url.OriginalUrl
+							<a href="@url.OriginalUrl">@(url.OriginalUrl.Length > 60 ? @url.OriginalUrl.Substring(0,60) + "..." : @url.OriginalUrl)</a>
 						</td>
 						<td>
-							@url.ShortUrl
+							<a href="@url.ShortUrl">@url.ShortUrl</a>
 						</td>
 						<td>
 							<div class="btn-group w-100" role="group">
