@@ -12,17 +12,21 @@ namespace UrlShortenerWeb.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-
         public IActionResult Index()
         {
             return View(_unitOfWork.UrlRepo.GetAll(null, "User"));
         }
-        public IActionResult About() 
+        [HttpGet,Route("/redirector/{token}")]
+        public IActionResult Redirector([FromRoute] string token) 
         {
-            return View();
+            string? originalUrl = _unitOfWork.UrlRepo.Get(url => url.TokenShortUrl == token,null)?.OriginalUrl;
+            if (originalUrl is null) 
+            {
+                return NotFound();
+            }
+            return Redirect(originalUrl);   
         }
-
-        public IActionResult Privacy()
+        public IActionResult About() 
         {
             return View();
         }
