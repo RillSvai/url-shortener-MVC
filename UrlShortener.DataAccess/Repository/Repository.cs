@@ -20,7 +20,7 @@ namespace UrlShortener.DataAccess.Repository
             _db = db;
             _dbSet = _db.Set<T>();
         }
-        public virtual T Get(Expression<Func<T, bool>>? filter, string? includeProperties)
+        async public virtual Task<T?> Get(Expression<Func<T, bool>>? filter, string? includeProperties)
         {
             IQueryable<T> query = _dbSet;
             if (!string.IsNullOrEmpty(includeProperties)) 
@@ -34,10 +34,10 @@ namespace UrlShortener.DataAccess.Repository
             {
                 query = query.Where(filter);
             }
-            return query.FirstOrDefault();
+            return await query.FirstOrDefaultAsync();
         }
 
-        public virtual IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties)
+        async public virtual Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties)
         {
             IQueryable<T> query = _dbSet;
             if (!string.IsNullOrEmpty(includeProperties))
@@ -51,26 +51,28 @@ namespace UrlShortener.DataAccess.Repository
             {
                 query = query.Where(filter);
             }
-            return query.ToList();
+            return await query.ToListAsync();
         }
 
-        public virtual void Insert(T entity)
+        async public virtual Task Insert(T entity)
         {
-            _dbSet.Add(entity);
+            await _dbSet.AddAsync(entity);
         }
 
-        public virtual void InsertRange(IEnumerable<T> entities)
+        async public virtual Task InsertRange(IEnumerable<T> entities)
         {
-            _dbSet.AddRange(entities);
+            await _dbSet.AddRangeAsync(entities);
         }
 
         public virtual void Remove(T entity)
         {
+            if (entity is null) return; 
             _dbSet.Remove(entity);
         }
 
         public virtual void RemoveRange(IEnumerable<T> entities)
         {
+            if (entities is null) return;
             _dbSet.RemoveRange(entities);
         }
     }

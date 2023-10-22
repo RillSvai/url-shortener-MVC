@@ -8,7 +8,6 @@ namespace UrlShortener.DataAccess.Repository
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext _db;
-        private readonly IUserManager<User> _userManager;
         public IUrlRepository UrlRepo { get; private set; }
 
         public IUserRepository UserRepo {get; private set;}
@@ -19,9 +18,9 @@ namespace UrlShortener.DataAccess.Repository
             UrlRepo = new UrlRepository(db);
             UserRepo = new UserRepository(db, userManager );
         }
-        public void Save()
+        async public Task Save()
         {
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }

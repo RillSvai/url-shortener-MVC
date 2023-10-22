@@ -6,7 +6,7 @@ namespace UrlShortener.Models
     public class UrlViewModel
     {
         [Url]
-        public Url Url { get; set; }
+        public Url? Url { get; set; }
 
         [Required]
         [Range(1, 40 )]

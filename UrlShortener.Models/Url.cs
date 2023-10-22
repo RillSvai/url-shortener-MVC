@@ -16,7 +16,7 @@ namespace UrlShortener.Models
         public int? CreatorId { get; set; }
         [ForeignKey("CreatorId")]
         [ValidateNever]
-        public User User { get; set; }
+        public User? User { get; set; }
 
     }
 }

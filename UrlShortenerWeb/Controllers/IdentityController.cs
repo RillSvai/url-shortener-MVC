@@ -10,11 +10,9 @@ namespace UrlShortenerWeb.Controllers
     public class IdentityController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserManager<User> _userManager;
-        public IdentityController(IUnitOfWork unitOfWork, IUserManager<User> userManager)
+        public IdentityController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _userManager = userManager; 
         }
         public IActionResult Index()
         {
@@ -25,9 +23,9 @@ namespace UrlShortenerWeb.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(LoginViewModel userData)
+        async public Task<IActionResult> Login(LoginViewModel userData)
         {
-            User? user = _unitOfWork.UserRepo.Get(user => user.Email == userData.Email && user.Password == userData.Password, null);
+            User? user = await _unitOfWork.UserRepo.Get(user => user.Email == userData.Email && user.Password == userData.Password, null);
             if (user is null)
             {
                 ModelState.AddModelError("", "Data incorrect!");
@@ -38,21 +36,20 @@ namespace UrlShortenerWeb.Controllers
             }
             SD.User = user; 
             return RedirectToAction("Index", "Home");
- 
         }
         public IActionResult Register() 
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Register(RegisterViewModel registerModel)
+        async public Task<IActionResult> Register(RegisterViewModel registerModel)
         {
             if (!ModelState.IsValid) 
             {
                 return View(registerModel);
             }
-            _unitOfWork.UserRepo.Insert(registerModel.User);
-            _unitOfWork.Save();
+            await _unitOfWork.UserRepo.Insert(registerModel.User!);
+            await _unitOfWork.Save();
             return RedirectToAction("Index","Home");
         }
         public IActionResult Logout() 

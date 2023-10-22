@@ -11,6 +11,6 @@ namespace UrlShortener.DataAccess.Repository.IRepository
         public IUrlRepository UrlRepo { get; }
         public IUserRepository UserRepo { get; }
 
-        public void Save();
+        public Task Save();
     }
 }

@@ -9,10 +9,10 @@ namespace UrlShortener.DataAccess.Repository.IRepository
 {
     public interface IRepository<T> where T : class
     {
-        public T Get(Expression<Func<T, bool>>? filter, string? includeProperties);
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter,string? includeProperties);
-        public void Insert(T entity);
-        public void InsertRange(IEnumerable<T> entities);
+        public Task<T?> Get(Expression<Func<T, bool>>? filter, string? includeProperties);
+        public Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter,string? includeProperties);
+        public Task Insert(T entity);
+        public Task InsertRange(IEnumerable<T> entities);
         public void Remove (T entity);
         public void RemoveRange(IEnumerable<T> entities);
 

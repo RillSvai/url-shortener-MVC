@@ -20,9 +20,9 @@ namespace UrlShortener.DataAccess.Repository
         {
             _db.Users.Update(user);
         }
-        public override void Insert(User entity)
+        async public override Task Insert(User entity)
         {
-            base.Insert(entity);
+            await base.Insert(entity);
             _userManager.AppointRole(entity);
             SD.User = entity;
         }

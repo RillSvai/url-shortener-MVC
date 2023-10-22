@@ -18,7 +18,7 @@
 					</th>
 					<th>
 					<div class="d-flex justify-content-end">
-							@if (_userManager.IsSignedIn(SD.User))
+							@if (_userManager.IsSignedIn(SD.User!))
 							{
 								<a class="btn btn-dark" asp-controller="Url" asp-action="Create"><i class="bi bi-plus-circle"></i> Create</a>
 							}
@@ -31,18 +31,18 @@
 				{
 					<tr>
 						<td>
-							<a href="@url.OriginalUrl">@(url.OriginalUrl.Length > 60 ? @url.OriginalUrl.Substring(0,60) + "..." : @url.OriginalUrl)</a>
+							<a href="@url.OriginalUrl">@(url.OriginalUrl!.Length > 60 ? @url.OriginalUrl.Substring(0,60) + "..." : @url.OriginalUrl)</a>
 						</td>
 						<td>
 							<a href="@url.ShortUrl">@url.ShortUrl</a>
 						</td>
 						<td>
 							<div class="btn-group w-100" role="group">
-								@if (_userManager.IsSignedIn(SD.User))
+								@if (_userManager.IsSignedIn(SD.User!))
 								{
 									<a class="nav-link btn btn-secondary" asp-controller="Url" asp-action="Details" asp-route-id=@url.Id>Details</a>
 								}
-								@if (_userManager.IsInRole(SD.User,SD.Role_Admin) || (_userManager.IsSignedIn(SD.User) && SD.User.Id == url.CreatorId))
+								@if (_userManager.IsInRole(SD.User!,SD.Role_Admin) || (_userManager.IsSignedIn(SD.User!) && SD.User?.Id == url.CreatorId))
 								{
 									<a class="nav-link btn btn-danger" asp-controller="Url" asp-action="Delete" asp-route-id=@url.Id>Delete</a>
 								}

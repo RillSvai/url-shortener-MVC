@@ -8,7 +8,7 @@ namespace UrlShortener.Utility.CustomValidation
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             RegisterViewModel? instance = validationContext.ObjectInstance as RegisterViewModel;
-            if (instance?.User.Password != value as string) 
+            if (instance?.User!.Password != value as string) 
             {
                 return new ValidationResult("Confirm password don`t match!");
             }

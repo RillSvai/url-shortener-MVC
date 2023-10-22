@@ -13,8 +13,8 @@ namespace UrlShortener.Utility.CustomValidation
 		protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
 		{
 			Uri validatedUri;
-			string url = (value as Url).OriginalUrl;
-			if (Uri.TryCreate(url, UriKind.Absolute, out validatedUri))
+			string? url = (value as Url)?.OriginalUrl;
+			if (Uri.TryCreate(url, UriKind.Absolute, out validatedUri!))
 			{
 				if (validatedUri.Scheme == Uri.UriSchemeHttp || validatedUri.Scheme == Uri.UriSchemeHttps)
 				{
